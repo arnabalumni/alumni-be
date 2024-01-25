@@ -1,6 +1,7 @@
 package database
 
 import (
+	"ausAlumniServer/internal/types"
 	"context"
 	"database/sql"
 	"fmt"
@@ -14,6 +15,7 @@ import (
 
 type Service interface {
 	Health() map[string]string
+	StudentQuery(types.BatchDetails) ([]types.StudentDetails, error)
 }
 
 type service struct {

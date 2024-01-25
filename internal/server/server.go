@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"ausAlumniServer/internal/database"
+
 	_ "github.com/joho/godotenv/autoload"
 )
 
