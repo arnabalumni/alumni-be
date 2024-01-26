@@ -16,6 +16,7 @@ import (
 type Service interface {
 	Health() map[string]string
 	StudentQuery(types.BatchDetails) ([]types.StudentDetails, error)
+	LoginQuery(string) ([]types.Admins, error)
 }
 
 type service struct {

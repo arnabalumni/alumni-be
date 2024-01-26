@@ -40,7 +40,6 @@ func (s *service) StudentQuery(batchDetail types.BatchDetails) ([]types.StudentD
 	defer rows.Close()
 	var results []types.StudentDetails
 	for rows.Next() {
-		fmt.Println("in rows.Next()")
 		var result types.StudentDetails
 		err = rows.Scan(&result.ID, &result.Name, &result.Occupation, &result.Address, &result.Email, &result.Linkedin)
 		if err != nil {

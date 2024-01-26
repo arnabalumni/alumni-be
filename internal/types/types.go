@@ -15,3 +15,15 @@ type StudentDetails struct {
 	Email      string `json:"email"`
 	Linkedin   string `json:"linkedin"`
 }
+
+type Credentials struct {
+	Username       string `json:"username"`
+	HashedPassword string `json:"hashedPassword"`
+}
+
+type Admins struct {
+	DepartmentId   string `json:"departmentId"`
+	IsHod          bool   `json:"isHod"`
+	Name           string `json:"name"`
+	HashedPassword string `json:"hashedPassword"`
+}
