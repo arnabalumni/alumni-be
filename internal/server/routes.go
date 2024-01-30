@@ -2,7 +2,7 @@ package server
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -27,6 +27,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Get("/health", s.healthHandler)
 	r.Post("/api/v1/students", s.Students)
 	r.Post("/api/v1/login", s.Login)
+	r.Post("/api/v1/generatecreds", s.GenerateCreds)
 
 	return r
 }
@@ -37,7 +38,7 @@ func (s *Server) HelloWorldHandler(w http.ResponseWriter, r *http.Request) {
 
 	jsonResp, err := json.Marshal(resp)
 	if err != nil {
-		log.Fatalf("error handling JSON marshal. Err: %v", err)
+		fmt.Printf("error handling JSON marshal. Err: %v", err)
 	}
 
 	_, _ = w.Write(jsonResp)

@@ -1,11 +1,15 @@
 package server
 
 import (
+	"ausAlumniServer/internal/types"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"time"
 
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -45,11 +49,33 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 	}
 	// flow where user is authenticated
 
-	resp := map[string]string{"status": "success"}
+	// create JWT token
+	claims := types.Claims{
+		DepartmentId: storedCredentials[0].DepartmentId,
+		IsHod:        storedCredentials[0].IsHod,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
+			Issuer:    "ausAlumniServer",
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	signedToken, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+
+	if err != nil {
+		log.Printf("Error while signing token: %v", err)
+		http.Error(w, "Error while signing token", http.StatusInternalServerError)
+		return
+	}
+
+	resp := map[string]string{"token": signedToken, "status": "success"}
+
 	jsonResp, err := json.Marshal(resp)
 	if err != nil {
 		log.Printf("Error handling JSON marshal: %v", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -57,5 +83,4 @@ func (s *Server) Login(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("Error writing response: %v", err)
 	}
-
 }

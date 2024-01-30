@@ -17,6 +17,7 @@ type Service interface {
 	Health() map[string]string
 	StudentQuery(types.BatchDetails) ([]types.StudentDetails, error)
 	LoginQuery(string) ([]types.Admins, error)
+	AddAdmin(types.Hod, string, string) error
 }
 
 type service struct {

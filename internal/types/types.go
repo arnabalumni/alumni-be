@@ -1,5 +1,9 @@
 package types
 
+import (
+	"github.com/golang-jwt/jwt/v5"
+)
+
 type BatchDetails struct {
 	School        string `json:"school"`
 	Department    string `json:"department"`
@@ -27,3 +31,23 @@ type Admins struct {
 	Name           string `json:"name"`
 	HashedPassword string `json:"hashedPassword"`
 }
+
+type Claims struct {
+	DepartmentId string `json:"departmentId"`
+	IsHod        bool   `json:"isHod"`
+	jwt.RegisteredClaims
+}
+
+type Hod struct {
+	School     string `json:"schoolName"`
+	Department string `json:"departmentName"`
+	Name       string `json:"name"`
+}
+
+// type HodDetails struct {
+// 	DepartmentId   int    `json:"departmentId"`
+// 	IsHod          bool   `json:"isHod"`
+// 	Name           string `json:"name"`
+// 	Username       string `json:"username"`
+// 	HashedPassword string `json:"hashedPassword"`
+// }

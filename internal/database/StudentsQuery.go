@@ -3,7 +3,6 @@ package database
 import (
 	"ausAlumniServer/internal/types"
 	"context"
-	"fmt"
 	"log"
 	"strconv"
 	"time"
@@ -22,19 +21,16 @@ func (s *service) StudentQuery(batchDetail types.BatchDetails) ([]types.StudentD
 			`
 
 	batchDetailAdmissionYear, err := strconv.ParseInt(batchDetail.AdmissionYear, 10, 64) // base 10, up to 64 bits
-	fmt.Println(batchDetailAdmissionYear)
 	if err != nil {
-		log.Fatalf(fmt.Sprintf("Error in Parsing admission_year: %v", err))
+		log.Printf("Error in Parsing admission_year: %v", err)
 		return nil, err
 	}
-	fmt.Println(query)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	fmt.Println(batchDetail)
 	rows, err := s.db.QueryContext(ctx, query, batchDetail.School, batchDetail.Department, batchDetail.Program+" Program", batchDetailAdmissionYear)
 	if err != nil {
-		log.Fatalf(fmt.Sprintf("Error in QueryContext: %v", err))
+		log.Printf("Error in QueryContext: %v", err)
 		return nil, err
 	}
 	defer rows.Close()
@@ -43,7 +39,7 @@ func (s *service) StudentQuery(batchDetail types.BatchDetails) ([]types.StudentD
 		var result types.StudentDetails
 		err = rows.Scan(&result.ID, &result.Name, &result.Occupation, &result.Address, &result.Email, &result.Linkedin)
 		if err != nil {
-			log.Fatalf(fmt.Sprintf("Error in Scan in StudentsQuery: %v", err))
+			log.Printf("Error in Scan in StudentsQuery: %v", err)
 			return nil, err
 		}
 		results = append(results, result)
