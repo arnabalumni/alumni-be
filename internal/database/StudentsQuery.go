@@ -9,7 +9,7 @@ import (
 )
 
 func (s *service) StudentQuery(batchDetail types.BatchDetails) ([]types.StudentDetails, error) {
-	query := `SELECT gs.student_id, gs.name, gs.occupation, gs.current_address, gs.email, gs.linkedin
+	query := `SELECT gs.name, gs.occupation, gs.current_address, gs.email, gs.linkedin
 			FROM graduated_students gs
 			JOIN programs pr ON gs.program_id = pr.program_id
 			JOIN departments dp ON pr.department_id = dp.department_id
@@ -37,7 +37,7 @@ func (s *service) StudentQuery(batchDetail types.BatchDetails) ([]types.StudentD
 	var results []types.StudentDetails
 	for rows.Next() {
 		var result types.StudentDetails
-		err = rows.Scan(&result.ID, &result.Name, &result.Occupation, &result.Address, &result.Email, &result.Linkedin)
+		err = rows.Scan(&result.Name, &result.Occupation, &result.Address, &result.Email, &result.Linkedin)
 		if err != nil {
 			log.Printf("Error in Scan in StudentsQuery: %v", err)
 			return nil, err

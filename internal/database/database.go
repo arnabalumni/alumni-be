@@ -18,6 +18,7 @@ type Service interface {
 	StudentQuery(types.BatchDetails) ([]types.StudentDetails, error)
 	LoginQuery(string) ([]types.Admins, error)
 	AddAdmin(types.Hod, string, string) error
+	AddAlumni(types.FullStudentDetails) error
 }
 
 type service struct {

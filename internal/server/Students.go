@@ -16,19 +16,19 @@ func (s *Server) Students(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&batchDetail)
 	if err != nil {
 		fmt.Println(err)
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "Request body incompatible", http.StatusBadRequest)
 		return
 	}
 	resp, err := s.db.StudentQuery(batchDetail)
 	if err != nil {
 		fmt.Println(err)
-		http.Error(w, err.Error(), http.StatusBadGateway)
+		http.Error(w, "Internal database error", http.StatusBadGateway)
 		return
 	}
 	jsonResp, err := json.Marshal(resp)
 	if err != nil {
 		fmt.Printf("error handling JSON marshal. Err: %v", err)
-		http.Error(w, err.Error(), http.StatusBadGateway)
+		http.Error(w, "Internal JSON parsing error", http.StatusBadGateway)
 		return
 	}
 
