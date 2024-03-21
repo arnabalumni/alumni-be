@@ -12,6 +12,7 @@ type BatchDetails struct {
 }
 
 type StudentDetails struct {
+	StudentId  int    `json:"id"`
 	Name       string `json:"name"`
 	Occupation string `json:"occupation"`
 	Address    string `json:"address"`
