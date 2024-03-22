@@ -20,6 +20,7 @@ type Service interface {
 	AddAdmin(types.Hod, string, string) error
 	AddAlumni(types.FullStudentDetails) error
 	UpdateAlumni(types.StudentDetails) error
+	GetDepartmentAndSchoolQuery(string) (map[string]string, error)
 }
 
 type service struct {

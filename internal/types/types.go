@@ -11,6 +11,10 @@ type BatchDetails struct {
 	AdmissionYear string `json:"admissionYear"`
 }
 
+type DeptData struct {
+	DeptId string `json:"id"`
+}
+
 type StudentDetails struct {
 	StudentId  int    `json:"id"`
 	Name       string `json:"name"`

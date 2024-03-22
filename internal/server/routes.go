@@ -30,6 +30,7 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Post("/api/v1/generatecreds", s.GenerateCreds)
 	r.Post("/api/v1/addalumni", s.AddAlumni)
 	r.Put("/api/v1/updatealumni", s.UpdateAlumni)
+	r.Post("/api/v1/getdepartment", s.GetDepartmentAndSchool)
 
 	return r
 }
