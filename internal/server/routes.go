@@ -25,13 +25,14 @@ func (s *Server) RegisterRoutes() http.Handler {
 	}))
 	r.Get("/", s.HelloWorldHandler)
 	r.Get("/health", s.healthHandler)
+	r.Get("/api/v1/getallinstitution", s.GetBuildDepartmentsData)
 	r.Post("/api/v1/students", s.Students)
 	r.Post("/api/v1/login", s.Login)
 	r.Post("/api/v1/generatecreds", s.GenerateCreds)
 	r.Post("/api/v1/addalumni", s.AddAlumni)
 	r.Post("/api/v1/addalumnibulk", s.AddAlumniBulk)
-	r.Put("/api/v1/updatealumni", s.UpdateAlumni)
 	r.Post("/api/v1/getdepartment", s.GetDepartmentAndSchool)
+	r.Put("/api/v1/updatealumni", s.UpdateAlumni)
 
 	return r
 }

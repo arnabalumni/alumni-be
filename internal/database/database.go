@@ -21,6 +21,7 @@ type Service interface {
 	AddAlumni(types.FullStudentDetails) error
 	UpdateAlumni(types.StudentDetails) error
 	GetDepartmentAndSchoolQuery(string) (map[string]string, error)
+	BuildDepartmentsData() (SchoolData, error)
 }
 
 type service struct {
