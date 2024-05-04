@@ -30,7 +30,7 @@ func (s *service) AddAlumni(alumniDetails types.FullStudentDetails) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	rows, err := s.db.QueryContext(ctx, query, alumniDetails.Name, alumniDetails.Program+" Program", alumniDetails.Department, alumniDetails.School, AdmissionYear, alumniDetails.Occupation, alumniDetails.Address, alumniDetails.Email, alumniDetails.Linkedin)
+	rows, err := s.db.QueryContext(ctx, query, alumniDetails.Name, alumniDetails.Program, alumniDetails.Department, alumniDetails.School, AdmissionYear, alumniDetails.Occupation, alumniDetails.Address, alumniDetails.Email, alumniDetails.Linkedin)
 	if err != nil {
 		log.Printf("Error in QueryContext: %v", err)
 		return err

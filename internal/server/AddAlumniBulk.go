@@ -98,19 +98,29 @@ func (s *Server) AddAlumniBulk(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// Iterate on the rows of data
+	firstRow := true
 	for row := range xl.ReadRows(sheetName) {
+		if firstRow {
+			firstRow = false // Set the flag to false after skipping the first row
+			continue
+		}
 		if !claims.IsHod || (row.Cells[5].Value == departmentAndSchoolName["schoolName"] && row.Cells[6].Value == departmentAndSchoolName["departmentName"]) {
 			var fullStudentDetails types.FullStudentDetails
 			fullStudentDetails.Name = row.Cells[0].Value
-			fullStudentDetails.Occupation = row.Cells[1].Value
-			fullStudentDetails.Address = row.Cells[2].Value
-			fullStudentDetails.Email = row.Cells[3].Value
-			fullStudentDetails.Linkedin = row.Cells[4].Value
-			fullStudentDetails.School = row.Cells[5].Value
-			fullStudentDetails.Department = row.Cells[6].Value
-			fullStudentDetails.Program = row.Cells[7].Value
-			fullStudentDetails.AdmissionYear = row.Cells[8].Value
-			s.db.AddAlumni(fullStudentDetails)
+			fullStudentDetails.School = row.Cells[1].Value
+			fullStudentDetails.Department = row.Cells[2].Value
+			fullStudentDetails.Program = row.Cells[3].Value
+			fullStudentDetails.AdmissionYear = row.Cells[4].Value
+			fullStudentDetails.Occupation = row.Cells[5].Value
+			fullStudentDetails.Address = row.Cells[6].Value
+			fullStudentDetails.Email = row.Cells[7].Value
+			fullStudentDetails.Linkedin = row.Cells[8].Value
+			err := s.db.AddAlumni(fullStudentDetails)
+			if err != nil {
+				fmt.Println("Error adding alumni:", err)
+				http.Error(w, "Error pushing to database: "+fullStudentDetails.Name, http.StatusInternalServerError)
+				return
+			}
 		}
 	}
 	fmt.Printf("Uploaded File: %+v\n", handler.Filename)

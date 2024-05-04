@@ -28,7 +28,7 @@ func (s *service) StudentQuery(batchDetail types.BatchDetails) ([]types.StudentD
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	rows, err := s.db.QueryContext(ctx, query, batchDetail.School, batchDetail.Department, batchDetail.Program+" Program", batchDetailAdmissionYear)
+	rows, err := s.db.QueryContext(ctx, query, batchDetail.School, batchDetail.Department, batchDetail.Program, batchDetailAdmissionYear)
 	if err != nil {
 		log.Printf("Error in QueryContext: %v", err)
 		return nil, err
