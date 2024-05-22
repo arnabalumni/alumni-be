@@ -15,7 +15,7 @@ func (s *service) AddAlumni(alumniDetails types.FullStudentDetails) error {
 		return err
 	}
 	query := `INSERT INTO graduated_students 
-		(name, program_id, admission_year, occupation, current_address, email, linkedin) 
+		(name, program_id, admission_year, occupation, current_address, email, linkedin, contact) 
 		VALUES 
 		($1, 
 			(SELECT program_id FROM programs WHERE name = $2 AND department_id = 
@@ -25,12 +25,13 @@ func (s *service) AddAlumni(alumniDetails types.FullStudentDetails) error {
 		$6, 
 		$7, 
 		$8, 
-		$9);`
+		$9,
+		$10);`
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	rows, err := s.db.QueryContext(ctx, query, alumniDetails.Name, alumniDetails.Program, alumniDetails.Department, alumniDetails.School, AdmissionYear, alumniDetails.Occupation, alumniDetails.Address, alumniDetails.Email, alumniDetails.Linkedin)
+	rows, err := s.db.QueryContext(ctx, query, alumniDetails.Name, alumniDetails.Program, alumniDetails.Department, alumniDetails.School, AdmissionYear, alumniDetails.Occupation, alumniDetails.Address, alumniDetails.Email, alumniDetails.Linkedin, alumniDetails.Contact)
 	if err != nil {
 		log.Printf("Error in QueryContext: %v", err)
 		return err

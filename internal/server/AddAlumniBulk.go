@@ -97,14 +97,14 @@ func (s *Server) AddAlumniBulk(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error processing the file", http.StatusInternalServerError)
 		return
 	}
-	// Iterate on the rows of data
+
 	firstRow := true
 	for row := range xl.ReadRows(sheetName) {
 		if firstRow {
 			firstRow = false // Set the flag to false after skipping the first row
 			continue
 		}
-		if !claims.IsHod || (row.Cells[5].Value == departmentAndSchoolName["schoolName"] && row.Cells[6].Value == departmentAndSchoolName["departmentName"]) {
+		if !claims.IsHod { //isAdmin
 			var fullStudentDetails types.FullStudentDetails
 			fullStudentDetails.Name = row.Cells[0].Value
 			fullStudentDetails.School = row.Cells[1].Value
@@ -114,7 +114,26 @@ func (s *Server) AddAlumniBulk(w http.ResponseWriter, r *http.Request) {
 			fullStudentDetails.Occupation = row.Cells[5].Value
 			fullStudentDetails.Address = row.Cells[6].Value
 			fullStudentDetails.Email = row.Cells[7].Value
-			fullStudentDetails.Linkedin = row.Cells[8].Value
+			fullStudentDetails.Contact = row.Cells[8].Value
+			fullStudentDetails.Linkedin = row.Cells[9].Value //TODO: change linkedin to webpage or something
+			err := s.db.AddAlumni(fullStudentDetails)
+			if err != nil {
+				fmt.Println("Error adding alumni:", err)
+				http.Error(w, "Error pushing to database: "+fullStudentDetails.Name, http.StatusInternalServerError)
+				return
+			}
+		} else {
+			var fullStudentDetails types.FullStudentDetails
+			fullStudentDetails.Name = row.Cells[0].Value
+			fullStudentDetails.School = departmentAndSchoolName["schoolName"]
+			fullStudentDetails.Department = departmentAndSchoolName["departmentName"]
+			fullStudentDetails.Program = row.Cells[1].Value
+			fullStudentDetails.AdmissionYear = row.Cells[2].Value
+			fullStudentDetails.Occupation = row.Cells[3].Value
+			fullStudentDetails.Address = row.Cells[4].Value
+			fullStudentDetails.Email = row.Cells[5].Value
+			fullStudentDetails.Contact = row.Cells[6].Value
+			fullStudentDetails.Linkedin = row.Cells[7].Value
 			err := s.db.AddAlumni(fullStudentDetails)
 			if err != nil {
 				fmt.Println("Error adding alumni:", err)

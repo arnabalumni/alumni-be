@@ -33,6 +33,8 @@ func (s *Server) RegisterRoutes() http.Handler {
 	r.Post("/api/v1/addalumnibulk", s.AddAlumniBulk)
 	r.Post("/api/v1/getdepartment", s.GetDepartmentAndSchool)
 	r.Put("/api/v1/updatealumni", s.UpdateAlumni)
+	r.Delete("/api/v1/delete/{alumniID}", s.DeleteAlumni)
+	r.Delete("/api/v1/delete/", s.DeleteAlumni)
 
 	return r
 }

@@ -21,6 +21,7 @@ type StudentDetails struct {
 	Occupation string `json:"occupation"`
 	Address    string `json:"address"`
 	Email      string `json:"email"`
+	Contact    string `json:"contact"`
 	Linkedin   string `json:"linkedin"`
 }
 
